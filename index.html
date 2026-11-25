@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hallal Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE occasion: a modern web studio, precise and futuristic
+   IDEA a nanotech lab: a swarm of particles assembles itself into each thing the studio makes
+   PICTURE a live particle swarm that morphs between the logo, a browser, a phone and code, scattering under the cursor
+   COLOUR near-black #05060f ground, cyan #39e6ff, violet #8a6cff, white ink
+   TYPE Space Grotesk 700 + Inter
+   LAYOUT laptop: headline left, swarm right filling the first screen; phone: headline, swarm, buttons */
+:root{--bg:#05060f;--bg2:#0a0c1c;--panel:rgba(255,255,255,.035);--line:rgba(140,160,255,.16);--ink:#f2f4ff;--soft:#9aa3c7;--cy:#39e6ff;--vi:#8a6cff}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px;color-scheme:dark}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Inter,system-ui,sans-serif;overflow-x:clip}
+a{color:inherit}
+svg{max-width:100%}
+h1,h2,h3{font-family:"Space Grotesk",Inter,sans-serif;letter-spacing:-.03em;line-height:1.03;margin:0;text-wrap:balance;font-weight:700}
+h2{font-size:clamp(34px,5vw,58px)}
+p{margin:0}
+.wrap{max-width:1240px;margin:0 auto;position:relative}
+.band{position:relative;padding-block:clamp(64px,9vw,130px);padding-left:max(5vw,16px);padding-right:max(5vw,16px)}
+.grad{background:linear-gradient(90deg,var(--cy),var(--vi));-webkit-background-clip:text;background-clip:text;color:transparent}
+#lattice{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.55}
+main,nav,footer{position:relative;z-index:1}
+
+nav{position:fixed;inset:14px 0 auto;z-index:20;padding:0 max(4vw,12px);pointer-events:none}
+.pill{pointer-events:auto;max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;background:rgba(5,6,15,.6);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:16px;padding:8px 8px 8px 14px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font:700 18px "Space Grotesk",sans-serif;letter-spacing:-.02em}
+.logo svg{width:34px;height:34px}
+.logo em{font-style:normal;color:var(--cy)}
+nav ul{display:flex;gap:2px;list-style:none;margin:0;padding:0}
+nav ul a{display:block;padding:10px 14px;border-radius:11px;text-decoration:none;font-size:15px;color:var(--soft);transition:color .2s,background .2s}
+nav ul a:hover,nav ul a:focus-visible{color:#fff;background:rgba(255,255,255,.06);outline:none}
+nav .cta{background:var(--cy);color:#05060f;font-weight:600}
+nav .cta:hover,nav .cta:focus-visible{background:#fff;color:#05060f}
+
+.hero{min-height:min(100svh,960px);display:grid;align-items:center;padding-top:120px}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:32px;align-items:center;width:100%}
+.chip{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--cy);border:1px solid rgba(57,230,255,.3);background:rgba(57,230,255,.06);padding:6px 14px;border-radius:99px;margin-bottom:24px}
+.chip i{width:7px;height:7px;border-radius:50%;background:var(--cy);box-shadow:0 0 10px var(--cy);animation:pu 1.8s infinite}
+@keyframes pu{50%{opacity:.3}}
+.hero h1{font-size:clamp(44px,6.8vw,96px)}
+.lead{font-size:clamp(17px,1.5vw,20px);color:var(--soft);max-width:30em;margin-top:22px}
+.btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 26px;border-radius:14px;font-weight:600;text-decoration:none;overflow:hidden;transition:transform .25s}
+.btn:hover{transform:translateY(-2px)}
+.btn:focus-visible{outline:2px solid var(--cy);outline-offset:3px}
+.btn.pri{background:linear-gradient(90deg,var(--cy),var(--vi));color:#05060f}
+.btn.pri::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-100%);animation:sh 3.5s infinite}
+@keyframes sh{60%,100%{transform:translateX(100%)}}
+.btn.sec{border:1px solid var(--line);background:var(--panel)}
+.swarm{position:relative;aspect-ratio:1/.9;width:100%;border-radius:28px;border:1px solid var(--line);background:radial-gradient(70% 60% at 50% 50%,rgba(138,108,255,.16),transparent 70%),rgba(255,255,255,.015);overflow:hidden;touch-action:pan-y}
+.swarm canvas{position:absolute;inset:0;width:100%;height:100%}
+.hud{position:absolute;left:16px;right:16px;bottom:14px;display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--soft);pointer-events:none}
+.hud b{color:var(--cy);font-weight:500}
+.dots{display:flex;gap:6px;align-items:center}
+.dots span{width:18px;height:3px;border-radius:2px;background:rgba(255,255,255,.18);transition:background .3s,width .3s}
+.dots span.on{background:var(--cy);width:30px}
+
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:40px}
+.sec-head p{color:var(--soft);max-width:24em}
+.scan{position:relative;display:inline-block}
+.scan::after{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--cy);box-shadow:0 0 14px var(--cy);opacity:0}
+.seen .scan::after{animation:sc 1.1s ease-out}
+@keyframes sc{0%{top:0;opacity:1}100%{top:100%;opacity:0}}
+
+.proj{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);border-radius:26px;overflow:hidden;border:1px solid var(--line);background:var(--bg2)}
+.proj .art{position:relative;min-height:340px;background:#1a0f06}
+.proj .art svg{position:absolute;inset:0;width:100%;height:100%}
+.proj .info{padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;justify-content:space-between;gap:28px}
+.proj h3{font-size:clamp(26px,2.8vw,36px)}
+.badge{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;font-size:14px;font-weight:500;color:#ffd27a;border:1px solid rgba(255,210,122,.35);padding:6px 14px;border-radius:99px;white-space:nowrap}
+.badge i{width:7px;height:7px;border-radius:50%;background:#ffd27a;animation:pu 1.6s infinite}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.tags span{font-size:14px;color:var(--soft);border:1px solid var(--line);border-radius:99px;padding:3px 12px}
+.slots{margin-top:16px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.slot{border:1px dashed var(--line);border-radius:22px;min-height:110px;display:grid;place-items:center;color:var(--soft);font-size:15px;text-align:center;padding:20px}
+.slot a{color:var(--cy)}
+
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.card{position:relative;border-radius:22px;padding:26px;min-height:260px;display:flex;flex-direction:column;justify-content:space-between;gap:22px;background:var(--panel);border:1px solid var(--line);overflow:hidden;transition:border-color .3s,transform .3s}
+.card::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:radial-gradient(240px circle at var(--mx,50%) var(--my,0%),var(--cy),transparent 60%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .3s}
+.card:hover::before{opacity:1}
+.card:hover{transform:translateY(-4px)}
+.card svg{width:56px;height:56px}
+.card h3{font-size:22px}
+.card p{font-size:15px;color:var(--soft);margin-top:8px}
+
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;position:relative}
+.step{padding:24px;border-radius:22px;background:var(--panel);border:1px solid var(--line)}
+.node{width:44px;height:44px;margin-bottom:18px}
+.step b{display:block;font:700 21px "Space Grotesk",sans-serif;margin-bottom:6px}
+.step p{color:var(--soft)}
+
+.contact{overflow:hidden}
+.contact .box{border-radius:32px;padding:clamp(28px,5vw,64px);background:radial-gradient(80% 120% at 100% 0%,rgba(57,230,255,.18),transparent 60%),radial-gradient(80% 120% at 0% 100%,rgba(138,108,255,.25),transparent 60%),var(--bg2);border:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:40px;align-items:center}
+.contact h2{font-size:clamp(36px,5.4vw,70px)}
+.contact p{color:var(--soft);font-size:18px;margin-top:16px}
+.links{display:grid;gap:14px}
+.lk{display:flex;align-items:center;gap:16px;background:rgba(5,6,15,.7);border:1px solid var(--line);border-radius:18px;padding:18px 22px;text-decoration:none;min-height:76px;transition:transform .25s,border-color .25s}
+.lk:hover,.lk:focus-visible{transform:translateX(6px);border-color:var(--cy);outline:none}
+.lk svg{width:28px;height:28px;flex:none}
+.lk small{display:block;color:var(--soft);font-size:13px}
+.lk strong{font-size:18px;white-space:nowrap}
+.lk .arr{margin-left:auto;color:var(--cy);font-size:22px}
+footer{padding:28px max(5vw,16px);color:var(--soft);font-size:14px;border-top:1px solid var(--line)}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+@media(max-width:1000px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:840px){
+  .hero{min-height:auto}
+  .hero .wrap,.proj,.contact .box{grid-template-columns:minmax(0,1fr)}
+  .swarm{max-width:560px;margin:0 auto;aspect-ratio:1/.8}
+  .proj .art{min-height:250px}
+  .steps{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:640px){
+  nav ul li:not(:last-child){display:none}
+  .grid,.slots{grid-template-columns:minmax(0,1fr)}
+  .card{min-height:0}
+  .btn{flex:1 1 100%}
+  .lk strong{font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<canvas id="lattice" aria-hidden="true"></canvas>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#39e6ff"/><stop offset="1" stop-color="#8a6cff"/></linearGradient>
+    <symbol id="mark" viewBox="0 0 40 40"><path d="M20 3l14.7 8.5v17L20 37 5.3 28.5v-17z" fill="none" stroke="url(#lg)" stroke-width="2.6" stroke-linejoin="round"/><path d="M20 12v8l-7 5M20 20l7 5" stroke="url(#lg)" stroke-width="2.4" stroke-linecap="round"/><circle cx="20" cy="12" r="3" fill="#39e6ff"/><circle cx="13" cy="25" r="3" fill="#8a6cff"/><circle cx="27" cy="25" r="3" fill="#6aa6ff"/></symbol>
+  </defs>
+</svg>
+
+<nav aria-label="Main">
+  <div class="pill">
+    <a class="logo" href="#top"><svg><use href="#mark"/></svg>Hallal<em>Labs</em></a>
+    <ul>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a class="cta" href="#contact">Start a project</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+<header class="band hero" id="top">
+  <div class="wrap">
+    <div>
+      <span class="chip"><i></i>Web studio by Hadi Hallal</span>
+      <h1>Websites built <span class="grad">particle by particle.</span></h1>
+      <p class="lead">Hallal Labs designs and builds modern websites for businesses: fast, animated, phone-first, with WhatsApp one tap away.</p>
+      <div class="btns">
+        <a class="btn pri" href="https://wa.me/96178941019">Start a project</a>
+        <a class="btn sec" href="#work">See the work</a>
+      </div>
+    </div>
+    <div class="swarm" id="swarm" aria-label="Animated particles forming the Hallal Labs logo, a website, a phone and code" role="img">
+      <canvas id="pc"></canvas>
+      <div class="hud"><span>Assembling: <b id="lbl">Hallal Labs</b></span><span class="dots" id="dots"></span></div>
+    </div>
+  </div>
+</header>
+
+<section class="band" id="work">
+  <div class="wrap">
+    <div class="sec-head"><h2 class="scan">Selected work</h2><p>New projects appear here as they launch.</p></div>
+    <div class="proj">
+      <div class="art">
+        <svg viewBox="0 0 700 400" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Fayad Wood and Formica website preview">
+          <defs><linearGradient id="wg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b97d44"/><stop offset="1" stop-color="#5e3517"/></linearGradient></defs>
+          <rect width="700" height="400" fill="url(#wg)"/>
+          <g id="grain" fill="none" stroke="#3e200b" stroke-opacity=".3" stroke-width="2"></g>
+          <g transform="translate(110 70) rotate(-4)">
+            <rect width="480" height="270" rx="14" fill="#f6efe6"/>
+            <rect width="480" height="40" rx="14" fill="#2b1a0e"/><rect y="26" width="480" height="14" fill="#2b1a0e"/>
+            <text x="22" y="27" fill="#f3dfc4" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="15">FAYAD</text>
+            <rect y="40" width="480" height="130" fill="#a86b36"/>
+            <text x="24" y="100" fill="#fff" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="26">Crafted in wood.</text>
+            <rect x="24" y="118" width="100" height="28" rx="6" fill="#f3dfc4"/>
+            <g transform="translate(300 60)"><polygon points="10,50 80,14 150,50" fill="#4a2a12"/><rect x="22" y="50" width="116" height="58" fill="#e2c49c"/><g fill="#4a2a12"><rect x="36" y="62" width="16" height="26" rx="8"/><rect x="72" y="62" width="16" height="26" rx="8"/><rect x="108" y="62" width="16" height="26" rx="8"/></g></g>
+            <g id="tiles"></g>
+          </g>
+        </svg>
+      </div>
+      <div class="info">
+        <span class="badge"><i></i>In progress</span>
+        <div><h3>Fayad Wood &amp; Formica</h3><div class="tags"><span>Business website</span><span>React</span></div></div>
+      </div>
+    </div>
+    <div class="slots"><div class="slot">Next project loading…</div><div class="slot"><span>Could be yours. <a href="#contact">Let's talk</a></span></div></div>
+  </div>
+</section>
+
+<section class="band" id="services">
+  <div class="wrap">
+    <div class="sec-head"><h2 class="scan">What the lab builds</h2></div>
+    <div class="grid" id="cards"></div>
+  </div>
+</section>
+
+<section class="band" id="process">
+  <div class="wrap">
+    <div class="sec-head"><h2 class="scan">From idea to online</h2></div>
+    <div class="steps" id="steps"></div>
+  </div>
+</section>
+
+<section class="band contact" id="contact">
+  <div class="wrap">
+    <div class="box">
+      <div>
+        <h2>Let's build <span class="grad">your site.</span></h2>
+        <p>Tell me about your business and I'll reply with ideas.</p>
+      </div>
+      <div class="links">
+        <a class="lk" href="https://wa.me/96178941019">
+          <svg viewBox="0 0 24 24" fill="#25d366" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.5 1 2.7.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.6-.3z"/></svg>
+          <span><small>WhatsApp</small><strong>+961 78 941 019</strong></span><span class="arr">→</span>
+        </a>
+        <a class="lk" href="https://instagram.com/hadi_hallal2">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#8a6cff" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#8a6cff"/></svg>
+          <span><small>Instagram</small><strong>@hadi_hallal2</strong></span><span class="arr">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap"><span>© <span id="yr">2026</span> Hallal Labs · Hadi Hallal</span><span>Built in the lab</span></div></footer>
+
+<script>
+{
+  const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* content */
+  const cards=[
+    ['Landing pages','One sharp page that sells your offer and gets people messaging you.','<path d="M8 12h40v32H8z M8 20h40 M15 28h16 M15 35h10"/>'],
+    ['Portfolios','Your work and photos in a layout people remember.','<path d="M7 10h18v16H7z M31 10h18v16H31z M7 32h18v14H7z M31 32h18v14H31z"/>'],
+    ['Business websites','Multi-page sites with services, gallery, about and contact.','<path d="M5 14h46v30H5z M5 21h46 M12 28h11v9H12z M30 28h14 M30 34h9"/>'],
+    ['WhatsApp ordering','Buttons that open a chat with you, message already written.','<path d="M28 7a19 19 0 0 0-16.4 28.6L9 47l11.7-2.6A19 19 0 1 0 28 7z M21 22c2 6 6 10 13 12"/>']
+  ];
+  document.getElementById('cards').innerHTML=cards.map(([t,d,p])=>`<div class="card"><svg viewBox="0 0 56 56" fill="none" stroke="url(#lg)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${p}</svg><div><h3>${t}</h3><p>${d}</p></div></div>`).join('');
+  const steps=[['Send the idea','Message me on WhatsApp with your business and what you need.'],['Design and build','You watch the site take shape and tell me what to change.'],['Launch','Your site goes live, ready for Instagram, WhatsApp and Google.']];
+  document.getElementById('steps').innerHTML=steps.map(([t,d],i)=>`<div class="step"><svg class="node" viewBox="0 0 44 44"><path d="M22 3l16.5 9.5v19L22 41 5.5 31.5v-19z" fill="rgba(57,230,255,.06)" stroke="url(#lg)" stroke-width="2"/>${Array.from({length:i+1},(_,k)=>`<circle cx="${22+(k-i/2)*9}" cy="22" r="3.4" fill="#39e6ff"/>`).join('')}</svg><b>${t}</b><p>${d}</p></div>`).join('');
+  document.getElementById('yr').textContent=new Date().getFullYear();
+  document.querySelectorAll('.card').forEach(c=>c.addEventListener('pointermove',e=>{const r=c.getBoundingClientRect();c.style.setProperty('--mx',e.clientX-r.left+'px');c.style.setProperty('--my',e.clientY-r.top+'px')}));
+
+  /* wood grain for project art */
+  let s=11;const rnd=()=>(s=s*16807%2147483647)/2147483647;
+  let gp='';for(let i=0;i<34;i++){const y=i*12+rnd()*6,a=3+rnd()*5,f=.006+rnd()*.01;let d=`M0 ${y.toFixed(1)}`;for(let x=20;x<=700;x+=20)d+=` L${x} ${(y+Math.sin(x*f+i)*a).toFixed(1)}`;gp+=`<path d="${d}"/>`}
+  document.getElementById('grain').innerHTML=gp;
+  document.getElementById('tiles').innerHTML=['#9c6233','#6f4423','#c9a679','#84522a'].map((c,i)=>`<g transform="translate(${24+i*110} 186)"><rect width="98" height="66" rx="8" fill="#fff" stroke="#e3d6c4"/><rect x="6" y="6" width="86" height="36" rx="5" fill="${c}"/><rect x="6" y="50" width="50" height="7" rx="3" fill="#2b1a0e"/></g>`).join('');
+
+  /* scan line on section headings */
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('seen');io.unobserve(e.target)}}),{threshold:.4});
+  document.querySelectorAll('.sec-head').forEach(h=>io.observe(h));
+
+  /* background lattice */
+  const L=document.getElementById('lattice'),lx=L.getContext('2d');
+  let LW=0,LH=0,nodes=[];
+  const sizeL=()=>{const d=Math.min(devicePixelRatio||1,2);LW=innerWidth;LH=innerHeight;L.width=LW*d;L.height=LH*d;lx.setTransform(d,0,0,d,0,0);const n=Math.round(Math.min(70,LW*LH/22000));nodes=Array.from({length:n},()=>({x:Math.random()*LW,y:Math.random()*LH,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25}))};
+  const drawL=()=>{lx.clearRect(0,0,LW,LH);for(const a of nodes){a.x+=a.vx;a.y+=a.vy;if(a.x<0||a.x>LW)a.vx*=-1;if(a.y<0||a.y>LH)a.vy*=-1}
+    for(let i=0;i<nodes.length;i++){const a=nodes[i];for(let j=i+1;j<nodes.length;j++){const b=nodes[j],dx=a.x-b.x,dy=a.y-b.y,q=dx*dx+dy*dy;if(q<16000){lx.strokeStyle=`rgba(120,150,255,${(.22*(1-q/16000)).toFixed(3)})`;lx.beginPath();lx.moveTo(a.x,a.y);lx.lineTo(b.x,b.y);lx.stroke()}}
+      lx.fillStyle='rgba(57,230,255,.55)';lx.fillRect(a.x-1,a.y-1,2,2)}};
+  const resizeL=new ResizeObserver(sizeL);resizeL.observe(document.documentElement);sizeL();
+
+  /* particle swarm */
+  const box=document.getElementById('swarm'),cv=document.getElementById('pc'),cx=cv.getContext('2d');
+  const shapes=['Hallal Labs','Websites','Mobile','Code'];
+  document.getElementById('dots').innerHTML=shapes.map(()=>'<span></span>').join('');
+  const dotEls=[...document.querySelectorAll('#dots span')],lbl=document.getElementById('lbl');
+  let W=0,H=0,P=[],targets=[],cur=0,mouse={x:-999,y:-999};
+  const off=document.createElement('canvas'),ox=off.getContext('2d',{willReadFrequently:true});
+  const rr=(c,x,y,w,h,r)=>{c.beginPath();c.roundRect?c.roundRect(x,y,w,h,r):c.rect(x,y,w,h)};
+  const paint=(k)=>{
+    ox.clearRect(0,0,W,H);ox.fillStyle='#fff';ox.strokeStyle='#fff';ox.lineJoin='round';ox.lineCap='round';
+    const m=Math.min(W,H),cxm=W/2,cym=H/2-10;
+    if(k===0){const R=m*.3;ox.lineWidth=m*.045;ox.beginPath();for(let i=0;i<6;i++){const a=Math.PI/3*i-Math.PI/2;ox.lineTo(cxm+R*Math.cos(a),cym+R*Math.sin(a))}ox.closePath();ox.stroke();
+      const t=[cxm,cym-R*.42],l=[cxm-R*.42,cym+R*.28],r=[cxm+R*.42,cym+R*.28];ox.lineWidth=m*.032;ox.beginPath();ox.moveTo(...t);ox.lineTo(cxm,cym);ox.lineTo(...l);ox.moveTo(cxm,cym);ox.lineTo(...r);ox.stroke();
+      for(const p of [t,l,r]){ox.beginPath();ox.arc(p[0],p[1],m*.055,0,7);ox.fill()}}
+    if(k===1){const w=m*.82,h=m*.56,x=cxm-w/2,y=cym-h/2;ox.lineWidth=m*.025;rr(ox,x,y,w,h,m*.04);ox.stroke();ox.fillRect(x,y,w,h*.13);
+      ox.fillRect(x+w*.08,y+h*.26,w*.4,h*.1);ox.fillRect(x+w*.08,y+h*.42,w*.28,h*.1);rr(ox,x+w*.08,y+h*.62,w*.2,h*.14,8);ox.fill();rr(ox,x+w*.56,y+h*.26,w*.36,h*.5,10);ox.fill()}
+    if(k===2){const h=m*.74,w=h*.5,x=cxm-w/2,y=cym-h/2;ox.lineWidth=m*.03;rr(ox,x,y,w,h,w*.16);ox.stroke();ox.fillRect(cxm-w*.18,y+h*.05,w*.36,h*.025);
+      rr(ox,x+w*.14,y+h*.14,w*.72,h*.28,10);ox.fill();ox.fillRect(x+w*.14,y+h*.5,w*.6,h*.04);ox.fillRect(x+w*.14,y+h*.58,w*.45,h*.04);rr(ox,x+w*.14,y+h*.74,w*.72,h*.12,12);ox.fill()}
+    if(k===3){ox.font=`700 ${Math.round(m*.42)}px "Space Grotesk",sans-serif`;ox.textAlign='center';ox.textBaseline='middle';ox.fillText('</>',cxm,cym)}
+    const d=ox.getImageData(0,0,W,H).data,pts=[],step=Math.max(4,Math.round(m/95));
+    for(let y=0;y<H;y+=step)for(let x=0;x<W;x+=step)if(d[(y*W+x)*4+3]>128)pts.push([x,y]);
+    for(let i=pts.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pts[i],pts[j]]=[pts[j],pts[i]]}
+    return pts};
+  const build=()=>{const r=box.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);W=Math.max(200,Math.round(r.width));H=Math.max(180,Math.round(r.height));
+    cv.width=W*d;cv.height=H*d;cx.setTransform(d,0,0,d,0,0);off.width=W;off.height=H;
+    targets=shapes.map((_,k)=>paint(k));const n=Math.max(...targets.map(t=>t.length));
+    while(P.length<n)P.push({x:Math.random()*W,y:Math.random()*H,vx:0,vy:0,h:Math.random()});P.length=n;setShape(cur,true)};
+  const setShape=(k,quiet)=>{cur=k;const t=targets[k];P.forEach((p,i)=>{const q=t[i%t.length];p.tx=q[0]+(i>=t.length?(Math.random()-.5)*3:0);p.ty=q[1];if(!quiet){p.vx+=(Math.random()-.5)*14;p.vy+=(Math.random()-.5)*14}});
+    lbl.textContent=shapes[k];dotEls.forEach((e,i)=>e.classList.toggle('on',i===k))};
+  const tick=()=>{cx.clearRect(0,0,W,H);
+    for(const p of P){const dx=p.x-mouse.x,dy=p.y-mouse.y,q=dx*dx+dy*dy;if(q<5200){const f=(5200-q)/5200*2.4,l=Math.sqrt(q)||1;p.vx+=dx/l*f;p.vy+=dy/l*f}
+      p.vx+=(p.tx-p.x)*.018;p.vy+=(p.ty-p.y)*.018;p.vx*=.84;p.vy*=.84;p.x+=p.vx;p.y+=p.vy;
+      const sp=Math.min(1,Math.abs(p.vx)+Math.abs(p.vy));
+      cx.fillStyle=p.h<.5?`rgba(57,230,255,${.65+sp*.35})`:`rgba(150,120,255,${.65+sp*.35})`;cx.fillRect(p.x-1.1,p.y-1.1,2.2,2.2)}};
+  box.addEventListener('pointermove',e=>{const r=box.getBoundingClientRect();mouse.x=e.clientX-r.left;mouse.y=e.clientY-r.top});
+  box.addEventListener('pointerleave',()=>{mouse.x=mouse.y=-999});
+  box.addEventListener('click',()=>{setShape((cur+1)%shapes.length);timer=0});
+  let visible=true;const vo=new IntersectionObserver(es=>{visible=es[0].isIntersecting});vo.observe(box);
+  const ro=new ResizeObserver(()=>build());ro.observe(box);
+  let timer=0,last=performance.now();
+  const loop=t=>{const dt=t-last;last=t;
+    if(visible){timer+=dt;if(!still&&timer>3800){timer=0;setShape((cur+1)%shapes.length)}tick()}
+    if(!still)drawL();requestAnimationFrame(loop)};
+  (document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{build();if(still){P.forEach(p=>{p.x=p.tx;p.y=p.ty});tick();drawL()}else requestAnimationFrame(loop)});
+}
+</script>
+</body>
+</html>
